@@ -1,0 +1,31 @@
+- name: Stop PrivateBin if it's currently running
+  changed_when: False
+  ansible.builtin.command:
+    argv: ["./service.sh", "stop"]
+    chdir: "/var/www/privatebin"
+    removes: "./service.sh"
+
+- name: Copy PrivateBin service files
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "{{ item.mode }}"
+  loop: [
+    {"src": "privatebin/docker-compose.yml.j2", "dest": "/var/www/privatebin/docker-compose.yml", "owner": "root", "mode": "600"},
+    {"src": "privatebin/service.sh.j2", "dest": "/var/www/privatebin/service.sh", "owner": "root", "mode": "755"}
+  ]
+
+- name: Update PrivateBin
+  changed_when: False
+  ansible.builtin.command:
+    argv: ["./service.sh", "update"]
+    chdir: "/var/www/privatebin"
+
+- name: Bring PrivateBin up
+  changed_when: False
+  ansible.builtin.command:
+    argv: ["./service.sh", "start"]
+    chdir: "/var/www/privatebin"
+

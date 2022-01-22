@@ -1,0 +1,31 @@
+- name: Stop DashMachine if it's currently running
+  changed_when: False
+  ansible.builtin.command:
+    argv: ["./service.sh", "stop"]
+    chdir: "/var/www/dashmachine"
+    removes: "./service.sh"
+
+- name: Copy DashMachine service files
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "{{ item.mode }}"
+  loop: [
+    {"src": "dashmachine/docker-compose.yml.j2", "dest": "/var/www/dashmachine/docker-compose.yml", "owner": "root", "mode": "600"},
+    {"src": "dashmachine/service.sh.j2", "dest": "/var/www/dashmachine/service.sh", "owner": "root", "mode": "755"}
+  ]
+
+- name: Update DashMachine
+  changed_when: False
+  ansible.builtin.command:
+    argv: ["./service.sh", "update"]
+    chdir: "/var/www/dashmachine"
+
+- name: Bring DashMachine up
+  changed_when: False
+  ansible.builtin.command:
+    argv: ["./service.sh", "start"]
+    chdir: "/var/www/dashmachine"
+

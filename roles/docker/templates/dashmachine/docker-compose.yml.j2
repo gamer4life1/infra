@@ -1,0 +1,10 @@
+version: '3.3'
+services:
+    dashmachine:
+        container_name: dashmachine
+        ports:
+            - '8680:5000'
+        volumes:
+            - '/opt/docker/data/dashmachine:/dashmachine/dashmachine/user_data'
+        restart: unless-stopped
+        image: 'rmountjoy/dashmachine:latest'

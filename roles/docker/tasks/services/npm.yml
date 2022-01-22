@@ -1,0 +1,31 @@
+- name: Stop Nginx Proxy Manager if it's currently running
+  changed_when: False
+  ansible.builtin.command:
+    argv: ["./service.sh", "stop"]
+    chdir: "/var/www/npm"
+    removes: "./service.sh"
+
+- name: Copy Nginx Proxy Manager service files
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "{{ item.mode }}"
+  loop: [
+    {"src": "npm/docker-compose.yml.j2", "dest": "/var/www/npm/docker-compose.yml", "owner": "root", "mode": "600"},
+    {"src": "npm/service.sh.j2", "dest": "/var/www/npm/service.sh", "owner": "root", "mode": "755"}
+  ]
+
+- name: Update Nginx Proxy Manager
+  changed_when: False
+  ansible.builtin.command:
+    argv: ["./service.sh", "update"]
+    chdir: "/var/www/npm"
+
+- name: Bring Nginx Proxy Manager up
+  changed_when: False
+  ansible.builtin.command:
+    argv: ["./service.sh", "start"]
+    chdir: "/var/www/npm"
+

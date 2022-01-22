@@ -1,0 +1,6 @@
+---
+- name: Deploy docker node
+  hosts: docker
+  remote_user: root
+  roles:
+    - docker

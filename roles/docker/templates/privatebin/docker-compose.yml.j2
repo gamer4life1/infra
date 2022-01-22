@@ -1,0 +1,11 @@
+version: '3.3'
+services:
+    privatebin:
+        restart: always
+        ports:
+            - '0.0.0.0:5656:80'
+        container_name: privatebin
+        volumes:
+            - '/opt/docker/data/privatebin/data:/privatebin/data'
+            - '/opt/docker/data/privatebin/cfg:/privatebin/cfg'
+        image: jgeusebroek/privatebin

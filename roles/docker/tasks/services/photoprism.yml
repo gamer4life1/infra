@@ -1,0 +1,31 @@
+- name: Stop PhotoPrism if it's currently running
+  changed_when: False
+  ansible.builtin.command:
+    argv: ["./service.sh", "stop"]
+    chdir: "/var/www/photoprism"
+    removes: "./service.sh"
+
+- name: Copy PhotoPrism service files
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "{{ item.mode }}"
+  loop: [
+    {"src": "photoprism/docker-compose.yml.j2", "dest": "/var/www/photoprism/docker-compose.yml", "owner": "root", "mode": "600"},
+    {"src": "photoprism/service.sh.j2", "dest": "/var/www/photoprism/service.sh", "owner": "root", "mode": "755"}
+  ]
+
+- name: Update PhotoPrism
+  changed_when: False
+  ansible.builtin.command:
+    argv: ["./service.sh", "update"]
+    chdir: "/var/www/photoprism"
+
+- name: Bring PhotoPrism up
+  changed_when: False
+  ansible.builtin.command:
+    argv: ["./service.sh", "start"]
+    chdir: "/var/www/photoprism"
+

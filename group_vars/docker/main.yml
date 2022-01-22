@@ -1,0 +1,16 @@
+enable_npm: true
+
+enable_dashmachine: true
+
+enable_vaultwarden: true
+
+enable_photoprism: true
+
+enable_privatebin: true
+
+current_services:
+  - npm
+  - dashmachine
+  - vaultwarden
+  - photoprism
+  - privatebin

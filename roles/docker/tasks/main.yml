@@ -1,0 +1,60 @@
+- name: Setup Docker
+  import_tasks: setup/setup_docker.yml
+
+- name: Find list of services currently on the server
+  register: services
+  ansible.builtin.find:
+    paths: /var/www/
+    file_type: directory
+    recurse: no
+
+- name: Stop any services we no longer need
+  loop: "{{ services.files }}"
+  when: "'{{ item.path | basename }}' not in current_services"
+  ansible.builtin.command:
+    argv: ["./service.sh", "stop"]
+    removes: "./service.sh"
+    chdir: "{{ item.path }}"
+  loop_control:
+    label: "{{ item.path }}"
+
+- name: Remove data for any services we no longer need
+  loop: "{{ services.files }}"
+  when: "'{{ item.path | basename }}' not in current_services"
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop_control:
+    label: "{{ item.path }}"
+
+- name: Setup NginxProxyManager
+  import_tasks: services/npm.yml
+  when: enable_npm | default(False)
+  tags:
+    - npm
+
+- name: Setup DashMachine
+  import_tasks: services/dashmachine.yml
+  when: enable_dashmachine | default(False)
+  tags:
+    - dashmachine
+
+- name: Setup Vaultwarden
+  import_tasks: services/vaultwarden.yml
+  when: enable_vaultwarden | default(False)
+  tags:
+    - vaultwarden
+
+- name: Setup PhotoPrism
+  import_tasks: services/photoprism.yml
+  when: enable_photoprism | default(False)
+  tags:
+    - photoprism
+
+- name: Setup PrivateBin
+  import_tasks: services/privatebin.yml
+  when: enable_privatebin | default(False)
+  tags:
+    - privatebin
+
+
