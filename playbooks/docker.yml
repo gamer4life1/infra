@@ -1,6 +1,50 @@
 ---
-- name: Deploy docker node
+
+
+- name: Setup
   hosts: docker
-  remote_user: root
+  tasks:
+    - name: Setup service directories
+      import_tasks: ../roles/docker/tasks/setup.yml
+
+
+- hosts: docker
   roles:
-    - docker
+    - role: docker/security/crowdsec
+      when: enable_crowdsec | default(False)
+      tags:
+        - crowdsec
+
+- hosts: docker
+  roles:
+    - role: docker/containers/authentik
+      when: enable_authentik | default(False)
+      tags:
+        - authentik
+
+- hosts: docker
+  roles:
+    - role: docker/containers/npm
+      when: enable_npm | default(False)
+      tags:
+        - npm
+
+    - role: docker/containers/dashmachine
+      when: enable_dashmachine | default(False)
+      tags:
+        - dashmachine
+
+    - role: docker/containers/vaultwarden
+      when: enable_vaultwarden | default(False)
+      tags:
+        - vaultwarden
+
+    - role: docker/containers/photoprism
+      when: enable_photoprism | default(False)
+      tags:
+        - photoprism
+
+    - role: docker/containers/privatebin
+      when: enable_privatebin | default(False)
+      tags:
+        - privatebin

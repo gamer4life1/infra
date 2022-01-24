@@ -1,5 +1,40 @@
-- name: Setup Docker
-  import_tasks: setup/setup_docker.yml
+- name: install dependencies
+  apt:
+    name: "{{item}}"
+    state: present
+    update_cache: yes
+  loop:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg-agent
+    - software-properties-common
+
+- name: add GPG key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: add docker repository to apt
+  apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu bionic stable
+    state: present
+
+- name: install docker
+  apt:
+    name: "{{item}}"
+    state: latest
+    update_cache: yes
+  loop:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+
+- name: make sure docker service is started
+  service:
+    name: docker
+    state: started
+    enabled: yes
 
 - name: Find list of services currently on the server
   register: services
@@ -12,7 +47,7 @@
   loop: "{{ services.files }}"
   when: "'{{ item.path | basename }}' not in current_services"
   ansible.builtin.command:
-    argv: ["./service.sh", "stop"]
+    argv: ["/bin/bash", "{{ item.path }}/service.sh", "stop"]
     removes: "./service.sh"
     chdir: "{{ item.path }}"
   loop_control:
@@ -37,35 +72,3 @@
     mode: 0775
   loop_control:
     label: "{{ item }}"
-
-- name: Setup NginxProxyManager
-  import_tasks: services/npm.yml
-  when: enable_npm | default(False)
-  tags:
-    - npm
-
-- name: Setup DashMachine
-  import_tasks: services/dashmachine.yml
-  when: enable_dashmachine | default(False)
-  tags:
-    - dashmachine
-
-- name: Setup Vaultwarden
-  import_tasks: services/vaultwarden.yml
-  when: enable_vaultwarden | default(False)
-  tags:
-    - vaultwarden
-
-- name: Setup PhotoPrism
-  import_tasks: services/photoprism.yml
-  when: enable_photoprism | default(False)
-  tags:
-    - photoprism
-
-- name: Setup PrivateBin
-  import_tasks: services/privatebin.yml
-  when: enable_privatebin | default(False)
-  tags:
-    - privatebin
-
-

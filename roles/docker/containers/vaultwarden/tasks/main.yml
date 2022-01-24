@@ -13,8 +13,8 @@
     group: "{{ item.owner }}"
     mode: "{{ item.mode }}"
   loop: [
-    {"src": "vaultwarden/docker-compose.yml.j2", "dest": "/var/www/vaultwarden/docker-compose.yml", "owner": "root", "mode": "600"},
-    {"src": "vaultwarden/service.sh.j2", "dest": "/var/www/vaultwarden/service.sh", "owner": "root", "mode": "755"}
+    {"src": "docker-compose.yml.j2", "dest": "/var/www/vaultwarden/docker-compose.yml", "owner": "root", "mode": "600"},
+    {"src": "service.sh.j2", "dest": "/var/www/vaultwarden/service.sh", "owner": "root", "mode": "755"}
   ]
 
 - name: Update Vaultwarden

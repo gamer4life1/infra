@@ -13,8 +13,8 @@
     group: "{{ item.owner }}"
     mode: "{{ item.mode }}"
   loop: [
-    {"src": "dashmachine/docker-compose.yml.j2", "dest": "/var/www/dashmachine/docker-compose.yml", "owner": "root", "mode": "600"},
-    {"src": "dashmachine/service.sh.j2", "dest": "/var/www/dashmachine/service.sh", "owner": "root", "mode": "755"}
+    {"src": "docker-compose.yml.j2", "dest": "/var/www/dashmachine/docker-compose.yml", "owner": "root", "mode": "600"},
+    {"src": "service.sh.j2", "dest": "/var/www/dashmachine/service.sh", "owner": "root", "mode": "755"}
   ]
 
 - name: Update DashMachine

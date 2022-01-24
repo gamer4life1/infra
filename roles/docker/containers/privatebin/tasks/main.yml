@@ -13,8 +13,8 @@
     group: "{{ item.owner }}"
     mode: "{{ item.mode }}"
   loop: [
-    {"src": "privatebin/docker-compose.yml.j2", "dest": "/var/www/privatebin/docker-compose.yml", "owner": "root", "mode": "600"},
-    {"src": "privatebin/service.sh.j2", "dest": "/var/www/privatebin/service.sh", "owner": "root", "mode": "755"}
+    {"src": "docker-compose.yml.j2", "dest": "/var/www/privatebin/docker-compose.yml", "owner": "root", "mode": "600"},
+    {"src": "service.sh.j2", "dest": "/var/www/privatebin/service.sh", "owner": "root", "mode": "755"}
   ]
 
 - name: Update PrivateBin

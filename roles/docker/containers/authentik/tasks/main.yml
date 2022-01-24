@@ -1,0 +1,31 @@
+- name: Stop Authentik if it's currently running
+  changed_when: False
+  ansible.builtin.command:
+    argv: ["/bin/bash", "/var/www/authentik/service.sh", "stop"]
+    chdir: "/var/www/authentik"
+    removes: "/var/www/authentik/service.sh"
+
+- name: Copy Authentik service files
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "{{ item.mode }}"
+  loop: [
+    {"src": "docker-compose.yml.j2", "dest": "/var/www/authentik/docker-compose.yml", "owner": "root", "mode": "600"},
+    {"src": "service.sh.j2", "dest": "/var/www/authentik/service.sh", "owner": "root", "mode": "755"},
+    {"src": ".env.j2", "dest": "/var/www/authentik/.env", "owner": "root", "mode": 600}
+  ]
+
+- name: Update Authentik
+  changed_when: False
+  ansible.builtin.command:
+    argv: ["/bin/bash", "/var/www/authentik/service.sh", "update"]
+    chdir: "/var/www/authentik"
+
+- name: Bring Authentik up
+  changed_when: False
+  ansible.builtin.command:
+    argv: ["/bin/bash", "/var/www/authentik/service.sh", "start"]
+    chdir: "/var/www/authentik"
