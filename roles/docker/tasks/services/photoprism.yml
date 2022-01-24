@@ -28,3 +28,9 @@
   ansible.builtin.command:
     argv: ["/bin/bash", "/var/www/photoprism/service.sh", "start"]
     chdir: "/var/www/photoprism"
+
+- name: Schedule a library scan at 1 AM every day
+  cron:
+    name: Scan the PhotoPrism library
+    hour: "1"
+    job: "/usr/bin/docker exec photoprism_photoprism_1 /photoprism/bin/photoprism index"
