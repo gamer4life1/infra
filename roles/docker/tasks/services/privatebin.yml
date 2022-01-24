@@ -1,9 +1,9 @@
 - name: Stop PrivateBin if it's currently running
   changed_when: False
   ansible.builtin.command:
-    argv: ["./service.sh", "stop"]
+    argv: ["/bin/bash", "/var/www/privatebin/service.sh", "stop"]
     chdir: "/var/www/privatebin"
-    removes: "./service.sh"
+    removes: "/var/www/privatebin/service.sh"
 
 - name: Copy PrivateBin service files
   ansible.builtin.template:
@@ -20,12 +20,11 @@
 - name: Update PrivateBin
   changed_when: False
   ansible.builtin.command:
-    argv: ["./service.sh", "update"]
+    argv: ["/bin/bash", "/var/www/privatebin/service.sh", "update"]
     chdir: "/var/www/privatebin"
 
 - name: Bring PrivateBin up
   changed_when: False
   ansible.builtin.command:
-    argv: ["./service.sh", "start"]
+    argv: ["/bin/bash", "/var/www/privatebin/service.sh", "start"]
     chdir: "/var/www/privatebin"
-

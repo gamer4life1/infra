@@ -1,9 +1,9 @@
 - name: Stop Vaultwarden if it's currently running
   changed_when: False
   ansible.builtin.command:
-    argv: ["./service.sh", "stop"]
+    argv: ["/bin/bash", "/var/www/vaultwarden/service.sh", "stop"]
     chdir: "/var/www/vaultwarden"
-    removes: "./service.sh"
+    removes: "/var/www/vaultwarden/service.sh"
 
 - name: Copy Vaultwarden service files
   ansible.builtin.template:
@@ -20,12 +20,11 @@
 - name: Update Vaultwarden
   changed_when: False
   ansible.builtin.command:
-    argv: ["./service.sh", "update"]
+    argv: ["/bin/bash", "/var/www/vaultwarden/service.sh", "update"]
     chdir: "/var/www/vaultwarden"
 
 - name: Bring Vaultwarden up
   changed_when: False
   ansible.builtin.command:
-    argv: ["./service.sh", "start"]
+    argv: ["/bin/bash", "/var/www/vaultwarden/service.sh", "start"]
     chdir: "/var/www/vaultwarden"
-

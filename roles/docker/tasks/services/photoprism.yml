@@ -1,9 +1,9 @@
 - name: Stop PhotoPrism if it's currently running
   changed_when: False
   ansible.builtin.command:
-    argv: ["./service.sh", "stop"]
+    argv: ["/bin/bash", "/var/www/photoprism/service.sh", "stop"]
     chdir: "/var/www/photoprism"
-    removes: "./service.sh"
+    removes: "/var/www/photoprism/service.sh"
 
 - name: Copy PhotoPrism service files
   ansible.builtin.template:
@@ -20,12 +20,11 @@
 - name: Update PhotoPrism
   changed_when: False
   ansible.builtin.command:
-    argv: ["./service.sh", "update"]
+    argv: ["/bin/bash", "/var/www/photoprism/service.sh", "update"]
     chdir: "/var/www/photoprism"
 
 - name: Bring PhotoPrism up
   changed_when: False
   ansible.builtin.command:
-    argv: ["./service.sh", "start"]
+    argv: ["/bin/bash", "/var/www/photoprism/service.sh", "start"]
     chdir: "/var/www/photoprism"
-

@@ -1,9 +1,9 @@
 - name: Stop DashMachine if it's currently running
   changed_when: False
   ansible.builtin.command:
-    argv: ["./service.sh", "stop"]
+    argv: ["/bin/bash", "/var/www/dashmachine/service.sh", "stop"]
     chdir: "/var/www/dashmachine"
-    removes: "./service.sh"
+    removes: "/var/www/dashmachine/service.sh"
 
 - name: Copy DashMachine service files
   ansible.builtin.template:
@@ -20,12 +20,11 @@
 - name: Update DashMachine
   changed_when: False
   ansible.builtin.command:
-    argv: ["./service.sh", "update"]
+    argv: ["/bin/bash", "/var/www/dashmachine/service.sh", "update"]
     chdir: "/var/www/dashmachine"
 
 - name: Bring DashMachine up
   changed_when: False
   ansible.builtin.command:
-    argv: ["./service.sh", "start"]
+    argv: ["/bin/bash", "/var/www/dashmachine/service.sh", "start"]
     chdir: "/var/www/dashmachine"
-

@@ -27,6 +27,17 @@
   loop_control:
     label: "{{ item.path }}"
 
+- name: Create new directories for new services
+  loop: "{{ current_services }}"
+  ansible.builtin.file:
+    path: "/var/www/{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0775
+  loop_control:
+    label: "{{ item }}"
+
 - name: Setup NginxProxyManager
   import_tasks: services/npm.yml
   when: enable_npm | default(False)

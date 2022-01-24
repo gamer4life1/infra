@@ -1,9 +1,9 @@
 - name: Stop Nginx Proxy Manager if it's currently running
   changed_when: False
   ansible.builtin.command:
-    argv: ["./service.sh", "stop"]
+    argv: ["/bin/bash", "/var/www/npm/service.sh", "stop"]
     chdir: "/var/www/npm"
-    removes: "./service.sh"
+    removes: "/var/www/npm/service.sh"
 
 - name: Copy Nginx Proxy Manager service files
   ansible.builtin.template:
@@ -20,12 +20,11 @@
 - name: Update Nginx Proxy Manager
   changed_when: False
   ansible.builtin.command:
-    argv: ["./service.sh", "update"]
+    argv: ["/bin/bash", "/var/www/npm/service.sh", "update"]
     chdir: "/var/www/npm"
 
 - name: Bring Nginx Proxy Manager up
   changed_when: False
   ansible.builtin.command:
-    argv: ["./service.sh", "start"]
+    argv: ["/bin/bash", "/var/www/npm/service.sh", "start"]
     chdir: "/var/www/npm"
-
