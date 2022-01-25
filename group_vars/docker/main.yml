@@ -12,9 +12,12 @@ enable_crowdsec: false
 
 enable_authentik: false
 
+enable_paperless: true
+
 current_services:
   - npm
   - dashmachine
   - vaultwarden
   - photoprism
   - privatebin
+  - paperless

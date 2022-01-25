@@ -48,3 +48,8 @@
       when: enable_privatebin | default(False)
       tags:
         - privatebin
+
+    - role: docker/containers/paperless
+      when: enable_paperless | default(False)
+      tags:
+        - paperless

@@ -1,0 +1,31 @@
+- name: Stop Paperless-NG if it's currently running
+  changed_when: False
+  ansible.builtin.command:
+    argv: ["/bin/bash", "/var/www/paperless/service.sh", "stop"]
+    chdir: "/var/www/paperless"
+    removes: "/var/www/paperless/service.sh"
+
+- name: Copy Paperless-NG service files
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "{{ item.mode }}"
+  loop: [
+    {"src": "docker-compose.yml.j2", "dest": "/var/www/paperless/docker-compose.yml", "owner": "root", "mode": "600"},
+    {"src": "service.sh.j2", "dest": "/var/www/paperless/service.sh", "owner": "root", "mode": "755"},
+    {"src": "docker-compose.env.j2", "dest": "/var/www/paperless/docker-compose.env", "owner": "root", "mode": 600}
+  ]
+
+- name: Update Paperless-NG
+  changed_when: False
+  ansible.builtin.command:
+    argv: ["/bin/bash", "/var/www/paperless/service.sh", "update"]
+    chdir: "/var/www/paperless"
+
+- name: Bring Paperless-NG up
+  changed_when: False
+  ansible.builtin.command:
+    argv: ["/bin/bash", "/var/www/paperless/service.sh", "start"]
+    chdir: "/var/www/paperless"
