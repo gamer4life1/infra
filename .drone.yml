@@ -18,18 +18,17 @@ steps:
     - push
     - pull_request
 
-#- name: apply ansible playbook
-#  image: plugins/ansible:1
-#  environment:
-#  settings:
-#    playbook: playbooks/docker.yml
-#    inventory: hosts
-#    private_key:
-#      from_secret: ansible_private_key
-#    vault_password:
-#      from_secret: ansible_vault_password
-#  when:
-#    event:
-#    - push
-#    - tag
-#
+- name: apply ansible playbook
+  image: plugins/ansible:1
+  environment:
+  settings:
+    playbook: playbooks/docker.yml
+    inventory: hosts
+    private_key:
+      from_secret: ansible_private_key
+    vault_password:
+      from_secret: ansible_vault_password
+  when:
+    event:
+    - push
+    - tag
