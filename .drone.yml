@@ -1,5 +1,9 @@
 kind: pipeline
-name: default
+name: Run Ansible
+
+platform:
+  os: linux
+  arch: arm
 
 steps:
 - name: check ansible syntax
