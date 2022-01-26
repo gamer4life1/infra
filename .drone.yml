@@ -11,7 +11,6 @@ steps:
   image: plugins/ansible:1
   settings:
     playbook: playbooks/docker.yml
-    galaxy: requirements.yml
     inventory: hosts
     syntax_check: true
   when:
@@ -24,7 +23,6 @@ steps:
 #  environment:
 #  settings:
 #    playbook: playbooks/docker.yml
-#    galaxy: requirements.yml
 #    inventory: hosts
 #    private_key:
 #      from_secret: ansible_private_key
