@@ -10,7 +10,7 @@ enable_privatebin: true
 
 enable_crowdsec: false
 
-enable_authentik: false
+enable_authentik: true
 
 enable_paperless: true
 
@@ -21,3 +21,4 @@ current_services:
   - photoprism
   - privatebin
   - paperless
+  - authentik
