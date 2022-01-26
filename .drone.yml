@@ -21,12 +21,13 @@ steps:
 - name: apply ansible playbook
   image: ansible-docker-aarch64:latest
   pull: never
+  environment:
+    SSH_KEY:
+      from_secret: ansible_private_key
   commands:
     - mkdir ~/.ssh
-    - echo "$ansible_private_key" > $HOME/.ssh/id_rsa
-    - echo "$ansible_public_key" > $HOME/.ssh/id_rsa.pub
+    - echo "$SSH_KEY" > $HOME/.ssh/id_rsa
     - chmod 600 $HOME/.ssh/id_rsa
-    - chmod 600 $HOME/.ssh/id_rsa.pub
     - echo "$vault_password" > vault_password
     - ansible-playbook playbooks/docker.yml
   when:
