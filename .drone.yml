@@ -22,6 +22,7 @@ steps:
   image: ansible-docker-aarch64:latest
   pull: never
   commands:
+    - mkdir ~/.ssh
     - echo "$ansible_private_key" > $HOME/.ssh/id_rsa
     - chmod 600 $HOME/.ssh/id_rsa
     - ansible-playbook --private-key="$HOME/.ssh/id_rsa" playbooks/docker.yml
