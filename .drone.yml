@@ -24,8 +24,11 @@ steps:
   commands:
     - mkdir ~/.ssh
     - echo "$ansible_private_key" > $HOME/.ssh/id_rsa
+    - echo "$ansible_public_key" > $HOME/.ssh/id_rsa.pub
     - chmod 600 $HOME/.ssh/id_rsa
-    - ansible-playbook --private-key="$HOME/.ssh/id_rsa" playbooks/docker.yml
+    - chmod 600 $HOME/.ssh/id_rsa.pub
+    - echo "$vault_password" > vault_password
+    - ansible-playbook playbooks/docker.yml
   when:
     event:
     - push
