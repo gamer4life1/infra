@@ -19,7 +19,8 @@ steps:
     - pull_request
 
 - name: apply ansible playbook
-  image: jpduyx/drone-plugin-ansible:latest
+  image: ansible-docker-aarch64:latest
+  pull: never
   commands:
     - echo "$ansible_private_key" > $HOME/.ssh/id_rsa
     - chmod 600 $HOME/.ssh/id_rsa
