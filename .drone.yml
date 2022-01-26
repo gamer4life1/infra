@@ -16,6 +16,7 @@ steps:
     syntax_check: true
   when:
     event:
+    - push
     - pull_request
 
 #- name: apply ansible playbook
