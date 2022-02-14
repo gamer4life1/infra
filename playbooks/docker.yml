@@ -53,3 +53,8 @@
       when: enable_paperless | default(False)
       tags:
         - paperless
+
+    - role: docker/containers/snibox
+      when: enable_snibox | default(False)
+      tags: 
+        - snibox

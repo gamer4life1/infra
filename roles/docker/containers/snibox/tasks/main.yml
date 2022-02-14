@@ -1,0 +1,30 @@
+- name: Stop Snibox if it's currently running
+  changed_when: False
+  ansible.builtin.command:
+    argv: ["/bin/bash", "/var/www/snibox/service.sh", "stop"]
+    chdir: "/var/www/snibox"
+    removes: "/var/www/snibox/service.sh"
+
+- name: Copy Snibox service files
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "{{ item.mode }}"
+  loop: [
+    {"src": "docker-compose.yml.j2", "dest": "/var/www/snibox/docker-compose.yml", "owner": "root", "mode": "600"},
+    {"src": "service.sh.j2", "dest": "/var/www/snibox/service.sh", "owner": "root", "mode": "755"}
+  ]
+
+- name: Update Snibox
+  changed_when: False
+  ansible.builtin.command:
+    argv: ["/bin/bash", "/var/www/snibox/service.sh", "update"]
+    chdir: "/var/www/snibox"
+
+- name: Bring Snibox up
+  changed_when: False
+  ansible.builtin.command:
+    argv: ["/bin/bash", "/var/www/snibox/service.sh", "start"]
+    chdir: "/var/www/snibox"

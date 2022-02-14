@@ -14,6 +14,8 @@ enable_authentik: true
 
 enable_paperless: true
 
+enable_snibox: true
+
 current_services:
   - npm
   - dashmachine
@@ -22,3 +24,4 @@ current_services:
   - privatebin
   - paperless
   - authentik
+  - snibox
